@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Илья — сайты на HTML/CSS, карточки Ozon и Wildberries и Telegram-боты."
+    />
+    <meta name="theme-color" content="#111111" />
+    <title>Илья — сайты, карточки товаров и Telegram-боты</title>
+    <style>
+      :root {
+        --bg: #111;
+        --paper: #eeeeea;
+        --muted: #aaa;
+        --line: #383838;
+        --accent: #dcff68;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 90px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--paper);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+      button,
+      a,
+      input,
+      textarea,
+      select {
+        outline-offset: 5px;
+      }
+      *:focus-visible {
+        outline: 2px solid var(--accent);
+      }
+      button {
+        cursor: pointer;
+      }
+      .wrap {
+        max-width: 1240px;
+        margin: auto;
+        padding: 0 40px;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 88px;
+        border-bottom: 1px solid var(--line);
+        gap: 24px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: -1px;
+      }
+      .mark {
+        background: var(--paper);
+        color: var(--bg);
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        transform: skew(-10deg);
+        font-style: italic;
+      }
+      .navlinks {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+      }
+      .navlinks a {
+        font-size: 14px;
+        padding: 12px 0;
+      }
+      .navlinks a:hover {
+        color: var(--accent);
+      }
+      .label {
+        font:
+          14px/1.5 "Courier New",
+          monospace;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .hero {
+        padding: 52px 0 48px;
+        position: relative;
+      }
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--accent);
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        background: currentColor;
+        border-radius: 50%;
+      }
+      .hero h1 {
+        font-size: clamp(64px, 11.8vw, 150px);
+        line-height: 1.02;
+        margin: 40px 0 32px;
+        letter-spacing: -0.075em;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+      .hero h1 span {
+        display: block;
+      }
+      .hero h1 .outline {
+        color: var(--bg);
+        -webkit-text-stroke: 1.5px var(--paper);
+      }
+      .hero-bottom {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: end;
+      }
+      .intro {
+        max-width: 480px;
+        color: #c3c3be;
+        margin: 0;
+        font-size: 18px;
+      }
+      .intro strong {
+        color: var(--paper);
+        font-weight: 400;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .btn {
+        min-height: 52px;
+        padding: 14px 22px;
+        border: 1px solid var(--paper);
+        background: transparent;
+        color: var(--paper);
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        font-weight: bold;
+      }
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #111;
+      }
+      .btn:hover {
+        background: var(--paper);
+        color: #111;
+      }
+      .btn.primary:hover {
+        background: #c9ee51;
+        border-color: #c9ee51;
+      }
+      .strip {
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        gap: 24px;
+        justify-content: space-between;
+        padding: 18px 0;
+        flex-wrap: wrap;
+        color: #bcbcb8;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+      }
+      .strip b {
+        color: var(--paper);
+      }
+      section {
+        padding: 64px 0;
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+      .section-head h2 {
+        font-size: clamp(30px, 4vw, 48px);
+        line-height: 1.1;
+        letter-spacing: -2px;
+        margin: 0;
+        text-transform: uppercase;
+      }
+      .section-head .label {
+        color: var(--muted);
+      }
+      .services {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1px solid var(--line);
+      }
+      .service {
+        padding: 32px;
+        min-width: 0;
+      }
+      .service + .service {
+        border-left: 1px solid var(--line);
+      }
+      .service .num {
+        color: var(--accent);
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+      }
+      .service h3 {
+        font-size: 32px;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin: 32px 0 16px;
+      }
+      .service p {
+        color: #bcbcb8;
+        max-width: 440px;
+        margin-bottom: 24px;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        border: 1px solid var(--line);
+        padding: 7px 12px;
+        font-size: 14px;
+      }
+      .service-bottom {
+        margin-top: 32px;
+        font-size: 14px;
+        color: #aaa;
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+      }
+      .process-section {
+        background: var(--paper);
+        color: var(--bg);
+      }
+      .process-section .section-head .label {
+        color: #575751;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+      .step {
+        border-top: 1px solid #acaca6;
+        padding-top: 16px;
+      }
+      .step .label {
+        color: #555;
+      }
+      .step h3 {
+        font-size: 22px;
+        margin: 22px 0 12px;
+        letter-spacing: -0.5px;
+      }
+      .step p {
+        color: #565650;
+        margin: 0;
+      }
+      .about {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 64px;
+      }
+      .about h2 {
+        font-size: 48px;
+        line-height: 1;
+        letter-spacing: -2px;
+        margin: 18px 0 0;
+      }
+      .about p {
+        color: #bcbcb8;
+        font-size: 20px;
+        margin: 0 0 20px;
+        max-width: 640px;
+      }
+      .about p strong {
+        color: var(--paper);
+        font-weight: 400;
+      }
+      .contact {
+        padding: 48px 0 64px;
+        border-top: 1px solid var(--line);
+      }
+      .contact-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+      }
+      .contact h2 {
+        font-size: clamp(36px, 5.5vw, 68px);
+        letter-spacing: -3px;
+        line-height: 1;
+        margin: 16px 0 20px;
+      }
+      .contact p {
+        color: #aaa;
+        margin: 0;
+        max-width: 520px;
+      }
+      .footer {
+        border-top: 1px solid var(--line);
+        padding: 24px 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 14px;
+        color: #aaa;
+      }
+      .footer a {
+        padding: 10px 0;
+      }
+      dialog {
+        background: var(--paper);
+        color: #111;
+        border: 0;
+        width: min(560px, calc(100% - 32px));
+        padding: 32px;
+        max-height: 90vh;
+        overflow: auto;
+      }
+      dialog::backdrop {
+        background: #000b;
+      }
+      .modalhead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+      .modalhead h2 {
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: -1px;
+      }
+      .close {
+        background: none;
+        border: 1px solid #999;
+        width: 44px;
+        height: 44px;
+        font-size: 24px;
+        color: #111;
+      }
+      .note {
+        color: #555;
+        font-size: 14px;
+      }
+      .field {
+        display: block;
+        margin-top: 20px;
+      }
+      .field span {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #999;
+        background: white;
+        color: #111;
+        padding: 12px;
+        border-radius: 0;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+      .modalbtn {
+        width: 100%;
+        margin-top: 20px;
+      }
+      .feedback {
+        font-size: 14px;
+        min-height: 21px;
+        color: #333;
+        margin: 12px 0 0;
+      }
+      .contact-live {
+        display: none;
+      }
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 0 20px;
+        }
+        .nav {
+          min-height: 76px;
+        }
+        .navlinks {
+          gap: 16px;
+        }
+        .navlinks a:last-child {
+          display: none;
+        }
+        .hero {
+          padding-top: 32px;
+        }
+        .hero-top {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .hero h1 {
+          font-size: clamp(56px, 13.2vw, 99px);
+          margin-top: 32px;
+          letter-spacing: -0.065em;
+        }
+        .hero-bottom {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .intro {
+          font-size: 16px;
+        }
+        .actions {
+          justify-content: flex-start;
+        }
+        .btn {
+          padding: 12px 16px;
+          gap: 18px;
+        }
+        .strip {
+          gap: 12px;
+        }
+        .services {
+          grid-template-columns: 1fr;
+        }
+        .service {
+          padding: 24px;
+        }
+        .service + .service {
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+        .section-head {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .about {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .about p {
+          font-size: 18px;
+        }
+        .contact-box {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .contact h2 {
+          letter-spacing: -2px;
+        }
+        .footer {
+          flex-direction: column;
+          gap: 4px;
+        }
+        section {
+          padding: 48px 0;
+        }
+        dialog {
+          padding: 24px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+      .services {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .service {
+        display: flex;
+        flex-direction: column;
+      }
+      .service-bottom {
+        margin-top: auto;
+      }
+      .service .tags {
+        margin-bottom: 32px;
+      }
+      @media (max-width: 1000px) {
+        .services {
+          grid-template-columns: 1fr;
+        }
+        .service + .service {
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <header class="wrap">
+      <nav class="nav" aria-label="Основная навигация">
+        <a class="logo" href="#top" aria-label="Илья — на главную"
+          ><span class="mark" aria-hidden="true">И</span>ИЛЬЯ<span
+            style="color: var(--accent)"
+            >.</span
+          ></a
+        >
+        <div class="navlinks">
+          <a href="#services">Услуги</a><a href="#process">Как работаю</a
+          ><a href="#contact">Контакт ↗</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="wrap">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-top">
+            <span class="label">Независимый исполнитель / Илья</span
+            ><span class="status label"
+              ><span class="dot" aria-hidden="true"></span>Сайты · Товары ·
+              Боты</span
+            >
+          </div>
+          <h1 id="hero-title">
+            <span>КОД. КОНТЕНТ.</span><span class="outline">ТВОЙ ПРОЕКТ.</span>
+          </h1>
+          <div class="hero-bottom">
+            <p class="intro">
+              Привет, я <strong>Илья</strong>. Пишу простые сайты на HTML и CSS,
+              делаю карточки товаров для Ozon и Wildberries и создаю
+              Telegram-ботов. Использую ИИ как инструмент в работе.
+            </p>
+            <div class="actions">
+              <button class="btn primary" data-brief>
+                Обсудить задачу <span aria-hidden="true">↗</span></button
+              ><a class="btn" href="#services"
+                >Что я делаю <span aria-hidden="true">↓</span></a
+              >
+            </div>
+          </div>
+        </section>
+        <div class="strip" aria-label="Направления работы">
+          <span><b>01</b> / HTML + CSS</span
+          ><span><b>02</b> / OZON + WILDBERRIES</span
+          ><span><b>03</b> / TELEGRAM BOTS</span>
+        </div>
+        <section id="services" aria-labelledby="services-title">
+          <div class="section-head">
+            <h2 id="services-title">Три направления.<br />Один исполнитель.</h2>
+            <span class="label">01 / Услуги</span>
+          </div>
+          <div class="services">
+            <article class="service">
+              <span class="num">[ 01 — WEB ]</span>
+              <h3>Небольшой сайт.<br />По твоей задаче.</h3>
+              <p>
+                Сайт-визитка, одностраничник или правки готовой страницы.
+                Согласуем структуру, контент и нужные функции до начала работы.
+              </p>
+              <div class="tags">
+                <span class="tag">HTML / CSS</span
+                ><span class="tag">Лендинги</span
+                ><span class="tag">Правки страниц</span>
+              </div>
+              <div class="service-bottom">
+                На выходе — файлы сайта и исходный код.
+              </div>
+            </article>
+            <article class="service">
+              <span class="num">[ 02 — MARKETPLACE ]</span>
+              <h3>Твой товар.<br />Понятная карточка.</h3>
+              <p>
+                Подготовлю карточки для Ozon и Wildberries. Названия, описания,
+                характеристики и состав материалов — по данным о твоём товаре.
+              </p>
+              <div class="tags">
+                <span class="tag">Ozon</span><span class="tag">Wildberries</span
+                ><span class="tag">Контент товаров</span>
+              </div>
+              <div class="service-bottom">
+                Объём и формат передачи согласуем заранее.
+              </div>
+            </article>
+            <article class="service">
+              <span class="num">[ 03 — TELEGRAM ]</span>
+              <h3>Telegram-боты.<br />Для твоих задач.</h3>
+              <p>
+                Создам простого бота с командами, меню и ответами на частые
+                вопросы. Сценарий работы и необходимые функции согласуем до
+                начала разработки.
+              </p>
+              <div class="tags">
+                <span class="tag">Команды</span><span class="tag">Меню</span
+                ><span class="tag">FAQ</span>
+              </div>
+              <div class="service-bottom">
+                Запуск, хостинг и поддержку обсудим отдельно.
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+      <section
+        class="process-section"
+        id="process"
+        aria-labelledby="process-title"
+      >
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="process-title">Без лишних движений.</h2>
+            <span class="label">02 / Процесс</span>
+          </div>
+          <div class="steps">
+            <article class="step">
+              <span class="label">01 / Задача</span>
+              <h3>Разбираем, что нужно</h3>
+              <p>
+                Ты присылаешь описание, материалы и примеры. Я уточняю детали и
+                предлагаю объём работы.
+              </p>
+            </article>
+            <article class="step">
+              <span class="label">02 / Работа</span>
+              <h3>Согласуем и делаем</h3>
+              <p>
+                Фиксируем стоимость, срок и правки. Затем готовлю результат по
+                согласованной задаче.
+              </p>
+            </article>
+            <article class="step">
+              <span class="label">03 / Результат</span>
+              <h3>Проверяем и передаём</h3>
+              <p>
+                Сверяем результат с договорённостями. Передаю готовые материалы
+                в нужном формате.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <div class="wrap">
+        <section class="about" id="about" aria-labelledby="about-title">
+          <div>
+            <span class="label" style="color: var(--muted)">03 / Обо мне</span>
+            <h2 id="about-title">Привет.<br />Я Илья.</h2>
+          </div>
+          <div>
+            <p>
+              Читаю HTML и CSS, пишу код самостоятельно и с помощью ИИ. Мои
+              направления —
+              <strong
+                >простые сайты, карточки товаров для маркетплейсов и
+                Telegram-боты.</strong
+              >
+            </p>
+            <p>
+              Не обещаю всё сразу: сначала обсуждаем задачу и определяем, что
+              именно должно получиться.
+            </p>
+          </div>
+        </section>
+        <section class="contact" id="contact" aria-labelledby="contact-title">
+          <div class="contact-box">
+            <div>
+              <span class="label" style="color: var(--accent)"
+                >04 / Следующий шаг</span
+              >
+              <h2 id="contact-title">Есть задача?<br />Давай начнём.</h2>
+              <p id="contact-copy">
+                Подготовь короткое описание проекта. Контакт для отправки
+                появится здесь после настройки сайта.
+              </p>
+            </div>
+            <button class="btn primary" data-brief>
+              Подготовить заявку <span aria-hidden="true">↗</span></button
+            ><a
+              class="btn primary contact-live"
+              id="telegram-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Написать в Telegram ↗</a
+            >
+          </div>
+        </section>
+        <footer class="footer">
+          <span
+            >© <span id="year">2026</span> Илья. Сайты, карточки товаров и
+            Telegram-боты.</span
+          ><a href="#top">Наверх ↑</a>
+        </footer>
+      </div>
+    </main>
+    <dialog id="brief">
+      <div class="modalhead">
+        <h2>О твоём проекте</h2>
+        <button class="close" aria-label="Закрыть" id="close-brief">×</button>
+      </div>
+      <p class="note">
+        Это локальный конструктор заявки: данные никуда не отправляются. Скачай
+        описание и передай его исполнителю.
+      </p>
+      <form id="brief-form">
+        <label class="field"
+          ><span>Как к тебе обращаться</span
+          ><input
+            name="name"
+            maxlength="100"
+            autocomplete="given-name"
+            required
+            placeholder="Твоё имя" /></label
+        ><label class="field"
+          ><span>Что нужно сделать</span
+          ><select name="service">
+            <option>Сайт на HTML / CSS</option>
+            <option>Правки готового сайта</option>
+            <option>Карточки Ozon / Wildberries</option>
+            <option>Telegram-бот</option>
+          </select></label
+        ><label class="field"
+          ><span>Задача, материалы и желаемый срок</span
+          ><textarea
+            name="details"
+            maxlength="5000"
+            required
+            placeholder="Например: сайт-визитка для репетитора. Тексты и фото готовы."
+          ></textarea></label
+        ><button class="btn primary modalbtn" type="submit">
+          Скачать описание задачи <span aria-hidden="true">↓</span>
+        </button>
+        <p class="feedback" id="feedback" role="status"></p>
+      </form>
+    </dialog>
+    <script>
+      // НАСТРОЙКА: укажите свой Telegram без @. Пустое значение не создаёт фиктивный контакт.
+      const TELEGRAM_USERNAME = "";
+      const dialog = document.getElementById("brief");
+      document.querySelectorAll("[data-brief]").forEach((b) =>
+        b.addEventListener("click", () => {
+          document.getElementById("feedback").textContent = "";
+          dialog.showModal();
+        }),
+      );
+      document
+        .getElementById("close-brief")
+        .addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (e) => {
+        const r = dialog.getBoundingClientRect();
+        if (
+          e.target === dialog &&
+          (e.clientX < r.left ||
+            e.clientX > r.right ||
+            e.clientY < r.top ||
+            e.clientY > r.bottom)
+        )
+          dialog.close();
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (/^[a-zA-Z][a-zA-Z0-9_]{4,31}$/.test(TELEGRAM_USERNAME)) {
+        const link = document.getElementById("telegram-link");
+        link.href = "https://t.me/" + TELEGRAM_USERNAME;
+        link.style.display = "inline-flex";
+        document.getElementById("contact-copy").textContent =
+          "Напиши мне в Telegram: расскажи, что нужно сделать, и приложи материалы или примеры.";
+        document.querySelector(".contact-box [data-brief]").style.display =
+          "none";
+      }
+      document.getElementById("brief-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const text =
+          "ЗАЯВКА НА ПРОЕКТ\n\nИмя: " +
+          data.get("name") +
+          "\nУслуга: " +
+          data.get("service") +
+          "\n\nОписание:\n" +
+          data.get("details");
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "project-brief.txt";
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        document.getElementById("feedback").textContent =
+          "Описание подготовлено для скачивания. Заявка не отправлена.";
+      });
+    </script>
+  </body>
+</html>
