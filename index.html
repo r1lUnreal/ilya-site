@@ -534,6 +534,46 @@
           border-top: 1px solid var(--line);
         }
       }
+      .contact-list {
+        display: grid;
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .contact-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        border: 1px solid #999;
+        padding: 20px;
+      }
+      a.contact-item:hover {
+        background: #e1e1da;
+        border-color: #111;
+      }
+      .contact-platform {
+        font-size: 14px;
+        color: #555;
+      }
+      .contact-username {
+        font-size: 24px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+      .copy-contact {
+        min-height: 44px;
+        background: #111;
+        color: #eeeeea;
+        border: 1px solid #111;
+        padding: 10px 16px;
+        margin-top: 4px;
+      }
+      .copy-contact:hover {
+        background: #333;
+      }
+      dialog :focus-visible {
+        outline-color: #111;
+      }
     </style>
   </head>
   <body id="top">
@@ -572,7 +612,7 @@
             </p>
             <div class="actions">
               <button class="btn primary" data-brief>
-                Обсудить задачу <span aria-hidden="true">↗</span></button
+                Оставить заявку <span aria-hidden="true">↗</span></button
               ><a class="btn" href="#services"
                 >Что я делаю <span aria-hidden="true">↓</span></a
               >
@@ -707,19 +747,13 @@
               >
               <h2 id="contact-title">Есть задача?<br />Давай начнём.</h2>
               <p id="contact-copy">
-                Подготовь короткое описание проекта. Контакт для отправки
-                появится здесь после настройки сайта.
+                Напиши мне в Telegram или Discord. Расскажи о задаче, приложи
+                материалы и укажи желаемый срок.
               </p>
             </div>
             <button class="btn primary" data-brief>
-              Подготовить заявку <span aria-hidden="true">↗</span></button
-            ><a
-              class="btn primary contact-live"
-              id="telegram-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Написать в Telegram ↗</a
-            >
+              Оставить заявку <span aria-hidden="true">↗</span>
+            </button>
           </div>
         </section>
         <footer class="footer">
@@ -730,52 +764,47 @@
         </footer>
       </div>
     </main>
-    <dialog id="brief">
+    <dialog
+      id="brief"
+      aria-labelledby="contacts-title"
+      aria-describedby="contacts-description"
+    >
       <div class="modalhead">
-        <h2>О твоём проекте</h2>
-        <button class="close" aria-label="Закрыть" id="close-brief">×</button>
-      </div>
-      <p class="note">
-        Это локальный конструктор заявки: данные никуда не отправляются. Скачай
-        описание и передай его исполнителю.
-      </p>
-      <form id="brief-form">
-        <label class="field"
-          ><span>Как к тебе обращаться</span
-          ><input
-            name="name"
-            maxlength="100"
-            autocomplete="given-name"
-            required
-            placeholder="Твоё имя" /></label
-        ><label class="field"
-          ><span>Что нужно сделать</span
-          ><select name="service">
-            <option>Сайт на HTML / CSS</option>
-            <option>Правки готового сайта</option>
-            <option>Карточки Ozon / Wildberries</option>
-            <option>Telegram-бот</option>
-          </select></label
-        ><label class="field"
-          ><span>Задача, материалы и желаемый срок</span
-          ><textarea
-            name="details"
-            maxlength="5000"
-            required
-            placeholder="Например: сайт-визитка для репетитора. Тексты и фото готовы."
-          ></textarea></label
-        ><button class="btn primary modalbtn" type="submit">
-          Скачать описание задачи <span aria-hidden="true">↓</span>
+        <h2 id="contacts-title">Оставить заявку</h2>
+        <button class="close" aria-label="Закрыть контакты" id="close-brief">
+          ×
         </button>
-        <p class="feedback" id="feedback" role="status"></p>
-      </form>
+      </div>
+      <p class="note" id="contacts-description">
+        Выбери удобный способ связи. Напиши, что нужно сделать, и приложи
+        примеры или материалы.
+      </p>
+      <div class="contact-list">
+        <a
+          class="contact-item"
+          href="https://t.me/rilUnreal"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="contact-platform">Telegram</span>
+          <span class="contact-username"
+            >@rilUnreal <span aria-hidden="true">↗</span></span
+          >
+        </a>
+        <div class="contact-item">
+          <span class="contact-platform">Discord</span>
+          <span class="contact-username" id="discord-name">rilunreal_01</span>
+          <button class="copy-contact" id="copy-discord" type="button">
+            Скопировать ник
+          </button>
+        </div>
+      </div>
+      <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
     </dialog>
     <script>
-      // НАСТРОЙКА: укажите свой Telegram без @. Пустое значение не создаёт фиктивный контакт.
-      const TELEGRAM_USERNAME = "";
       const dialog = document.getElementById("brief");
-      document.querySelectorAll("[data-brief]").forEach((b) =>
-        b.addEventListener("click", () => {
+      document.querySelectorAll("[data-brief]").forEach((button) =>
+        button.addEventListener("click", () => {
           document.getElementById("feedback").textContent = "";
           dialog.showModal();
         }),
@@ -783,49 +812,35 @@
       document
         .getElementById("close-brief")
         .addEventListener("click", () => dialog.close());
-      dialog.addEventListener("click", (e) => {
-        const r = dialog.getBoundingClientRect();
+      dialog.addEventListener("click", (event) => {
+        const bounds = dialog.getBoundingClientRect();
         if (
-          e.target === dialog &&
-          (e.clientX < r.left ||
-            e.clientX > r.right ||
-            e.clientY < r.top ||
-            e.clientY > r.bottom)
+          event.target === dialog &&
+          (event.clientX < bounds.left ||
+            event.clientX > bounds.right ||
+            event.clientY < bounds.top ||
+            event.clientY > bounds.bottom)
         )
           dialog.close();
       });
       document.getElementById("year").textContent = new Date().getFullYear();
-      if (/^[a-zA-Z][a-zA-Z0-9_]{4,31}$/.test(TELEGRAM_USERNAME)) {
-        const link = document.getElementById("telegram-link");
-        link.href = "https://t.me/" + TELEGRAM_USERNAME;
-        link.style.display = "inline-flex";
-        document.getElementById("contact-copy").textContent =
-          "Напиши мне в Telegram: расскажи, что нужно сделать, и приложи материалы или примеры.";
-        document.querySelector(".contact-box [data-brief]").style.display =
-          "none";
-      }
-      document.getElementById("brief-form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const data = new FormData(e.target);
-        const text =
-          "ЗАЯВКА НА ПРОЕКТ\n\nИмя: " +
-          data.get("name") +
-          "\nУслуга: " +
-          data.get("service") +
-          "\n\nОписание:\n" +
-          data.get("details");
-        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "project-brief.txt";
-        document.body.append(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        document.getElementById("feedback").textContent =
-          "Описание подготовлено для скачивания. Заявка не отправлена.";
-      });
+      document
+        .getElementById("copy-discord")
+        .addEventListener("click", async () => {
+          const feedback = document.getElementById("feedback");
+          try {
+            await navigator.clipboard.writeText("rilunreal_01");
+            feedback.textContent = "Ник Discord скопирован.";
+          } catch {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(document.getElementById("discord-name"));
+            selection.removeAllRanges();
+            selection.addRange(range);
+            feedback.textContent =
+              "Ник выделен. Скопируй его вручную: Ctrl+C или долгим нажатием на телефоне.";
+          }
+        });
     </script>
   </body>
 </html>
